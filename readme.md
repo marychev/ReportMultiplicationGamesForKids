@@ -4,7 +4,7 @@ Run project
 dotnet run
 ```
 
-Run building program
+Run program as file DLL
 ```
 dotnet build/ReportMultiplicationGamesForKids.dll
 ```
