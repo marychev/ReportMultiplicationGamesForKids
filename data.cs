@@ -27,20 +27,12 @@ public enum Local
 class Data : BaseReport 
 {
     private HtmlDocument doc;
+    
     public Data(string local) {
         this.local = local;
-
-        string url = $"https://apps.apple.com/{this.local.ToLower()}/app/id1504116464";
-        HtmlWeb web = new HtmlAgilityPack.HtmlWeb();
-        this.doc = web.Load(url);
-        
-        this.total = this.totatRating();
-
-        ratings = new Dictionary<int, string>();
-        for (int i = 1; i < 6; i++) {
-            ratings.Add(i, this.percentRate(i));
-        }
-
+        this.doc = this.initDoc();
+        this.total = this.initTotatRating();
+        this.ratings = this.initRatings();
     }
 
     public static float calc(string percent, int total) {
@@ -48,7 +40,21 @@ class Data : BaseReport
         return (total * result) / 100f;
     }
 
-    int totatRating() {
+    private Dictionary<int, string> initRatings() {
+        Dictionary<int, string> ratings = new Dictionary<int, string>();
+        for (int i = 1; i < 6; i++) {
+            ratings.Add(i, this.percentRate(i));
+        }
+        return ratings;
+    }
+
+    private HtmlDocument initDoc() {
+        string url = $"https://apps.apple.com/{this.local.ToLower()}/app/id1504116464";
+        HtmlWeb web = new HtmlAgilityPack.HtmlWeb();
+        return web.Load(url);
+    }
+
+    private int initTotatRating() {
         string selector = "//div[@class='we-customer-ratings__count small-hide medium-show']";
         HtmlNode node = this.doc.DocumentNode.SelectSingleNode(selector);
         string text = Regex.Replace(node.InnerText, "[^0-9]", "");
@@ -56,7 +62,7 @@ class Data : BaseReport
         return Int32.Parse(text);
     }
 
-    string percentRate(int stars) {
+    private string percentRate(int stars) {
         string selector = stars == 1 ? "//span[@class='we-star-bar-graph__stars ']" 
             : $"//span[@class='we-star-bar-graph__stars we-star-bar-graph__stars--{stars.ToString()}']";
         HtmlNode node = this.doc.DocumentNode.SelectSingleNode(selector);

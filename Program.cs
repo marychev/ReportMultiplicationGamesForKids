@@ -38,7 +38,7 @@ namespace ReportMultiplicationGamesForKids
             Console.ReadKey(true);
         }
 
-        static void Help() {
+        private static void Help() {
             Console.Clear();
             Console.WriteLine("\r\n[HELP]---------------------------------------------------\r");
             Console.WriteLine("The following regions are available:");
