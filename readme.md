@@ -1,7 +1,12 @@
 
-Run programm
+Run project
 ```
 dotnet run
+```
+
+Run building program
+```
+dotnet build/ReportMultiplicationGamesForKids.dll
 ```
 
 
